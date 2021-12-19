@@ -15,24 +15,32 @@
 
 <a name="routes"></a>
 ## Routes
-|Path|For|
-|-----|-----|
-|post("/register", register)|Register route|
-|post("/login", logIn)|Login route|
-|get("/activated/:token", activated)|activated email route|
-|put("/forget", forgetPass)|forget Password route|
-|get("/reset-pass/:res-tok", updatePass)|forget Password route|
-|get("/auth/google",)|signIn with google route|
-|get("/",authentication, authorization, allUser)|get users  route "for admin"|
-|delete("/", authentication, authorization, deleteUser)|delete user route "for admin"|
-|get('/profile',authentication)|user profile|
-|post('/post',authentication, newPost)|New post route|
-|put('/update',authentication, updatePost)|update post route|
-|delete('/delete',authentication, deletePost)|Delete post route|
-|get('/',authentication, allPost)|all post route|
-|post('/add', authentication, newComment), put('/', authentication, updateComment), delete('/', authentication , deleteComment), get('/all', authentication, allComment)|comment routes|
-|post("/add",authentication,addRating), get("/",authentication,allRating)|Rating routes|
-|get("/",allProduct), put("/update",updateProduct), post("/add",addProduct), delete ("/delete",deleteProduct)|Products routes| 
+|HTTP Method|URL|Request Body|Success status|Error Status|Description|
+|-----------|---|------------|--------------|------------|-----------|
+|POST|```/user/register```|Register route|
+|POST|```/user/login```|Login route|
+|GET|```/user/activated/:token```|activated email route|
+|PUT|```/user/forget```|forget Password route|
+|GET|```/user/reset-pass/:res-tok```|forget Password route|
+|GET|```/auth/google```|signIn with google route|
+|GET|```/user```|get all users  route "for admin"|
+|DELETE|```/user/delete```|delete user route "for admin"|
+|GET|```/user/profile```|user profile|
+|POST|```/posts/post```|New post route|
+|PUT|```/posts/update```|update post route|
+|DELETE|```/posts/delete```|Delete post route|
+|GET|```/posts```|all post route|
+|POST|```/comments/add```|Add new comment| 
+|PUT|```/comments/update``` |updateComment| 
+|DELETE|```/comments/delete```| deleteComment)|
+|GET|```/comments```|allComment|
+|POST|```/rating/add```|addRating|
+|GET|```/rating```|allRating||
+|GET|```/product```|allProduct| 
+|PUT|```/product/update```|updateProduct| 
+|POST|```/product/add```|addProduct|
+|DELETE|```/product/delete```|deleteProduct|| 
+## ER diagrm
 ## Models
 ## UML diagram
-## ER diagrm
+
