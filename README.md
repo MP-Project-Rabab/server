@@ -39,6 +39,8 @@
 
 <a name="uml"></a>
 ## UML diagram
+![Untitled Diagram drawio(1)](https://user-images.githubusercontent.com/92247904/146693535-6a60c5a3-139a-4679-a8cf-7574b012963c.png)
+
 <a name="models"></a>
 ## Models:
 ### Role Model:
