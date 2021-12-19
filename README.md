@@ -96,6 +96,28 @@ type             |   ref               | required           | n/a
 isDeleted            |   Boolean              |                    | false
 
 ### Product Model:
+Key                  |     Type               |  options           | default value
+-------------        | ---------------        | -----------        |------
+by               |   ref                |        required            | ""
+img               |   String                |                    | ""
+describe                 |   String               | required           | n/a
+comment                |   ref               |            |n/a
+price                 |  String                | required           | n/a
+name             |   String               |    required       | n/a
+rating             |   ref               |            | n/a
+
+### Service Model:
+Key           |     Type            |  options  | default value
+------------- | ---------------     | --------- |------
+by            |   ref               |   | n/a
+name   |   String               | required  | n/a
+
+### Status Model:
+Key           |     Type            |  options  | default value
+------------- | ---------------     | --------- |------
+ready            |   Boolean               | required  | false
+comment    |   Boolean               | required  | false
+date    |   Boolean               |  required | false
 
 ## ER diagrm
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
