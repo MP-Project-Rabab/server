@@ -42,6 +42,31 @@
 |DELETE|```/product/delete```||200|400|deleteProduct| 
 ## UML diagram
 ## Models:
+### Role Model:
+
+Key           |     Type               |  options           | default value
+------------- | ---------------        | -----------        |------
+role          |   String               | required, unique   | n/a
+
+
+### User Model:
+Key                      |     Type               |  options           | default value
+-------------            | ---------------        | -----------        |------
+email                    |   String               | required, unique   | n/a
+username                 |   String               | required, unique   | n/a
+password                 |   String               | required           | n/a
+phoneNumber              |   String               | required, unique   | n/a
+role                     |   ref.                 | required           | n/a
+isDeleted                |   Boolean              |                    | false
+avatar                      |   String               | required           | "https://i.pinimg.com/564x/e7/c3/f4/e7c3f4a076b8472e0b1bd9c00a847f7f.jpg"
+location                 |   String              |                    |  n/a
+certificate                |   String               |     required               | ""
+cart            |   ref                |                    | []
+shop          |   ref               |                    | []
+service     |  ref              |                    | n/a
+comment             |   ref               | required           | n/a
+ready            |   String               |           | true
+rating  |  ref               |                    | n/a
 
 ## ER diagrm
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
