@@ -14,7 +14,7 @@
 
 
 <a name="routes"></a>
-## Routes
+## Routes:
 |HTTP Method|URL|Request Body|Success status|Error Status|Description|
 |-----------|---|------------|--------------|------------|-----------|
 |POST|```/user/register```|{email, username, password,phoneNumber, avatar, role}|200|400|Register route|
@@ -40,7 +40,11 @@
 |PUT|```/product/update```||200|400|updateProduct| 
 |POST|```/product/add```||200|400|addProduct|
 |DELETE|```/product/delete```||200|400|deleteProduct| 
-## ER diagrm
-## Models
 ## UML diagram
+## Models:
+
+## ER diagrm
+![backend ER Diagram drawio](https://user-images.githubusercontent.com/92247904/146681083-9a70e138-972b-4c26-9864-c2f5c06b4b32.png)
+
+
 
