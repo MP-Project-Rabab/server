@@ -17,7 +17,7 @@
 ## Routes
 |HTTP Method|URL|Request Body|Success status|Error Status|Description|
 |-----------|---|------------|--------------|------------|-----------|
-|POST|```/user/register```|{userName, email, password,avatar}|200|400|Register route|
+|POST|```/user/register```|{email, username, password,phoneNumber, avatar, role}|200|400|Register route|
 |POST|```/user/login```| {userName, email, password}|200|400|Login route|
 |GET|```/user/activated/:token```|{token}|200|400|activated email route|
 |PUT|```/user/forget```|{email}|200|400|forget Password route|
