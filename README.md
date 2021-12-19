@@ -79,7 +79,23 @@ Key           |     Type            |  options  | default value
 ------------- | ---------------     | --------- |------
 by            |   ref               | required  | n/a
 comment    |   String               | required  | n/a
-date    |   Date               |   | n/a
+date    |   Date               |   | Date.now
+isDeleted            |   Boolean              |                    | false
+
+### Post Model:
+Key                  |     Type               |  options           | default value
+-------------        | ---------------        | -----------        |------
+by               |   ref                |        required            | ""
+img               |   String                |                    | ""
+date                 |   Date                 |                    | Date.now
+describe                 |   String               | required           | n/a
+isProblem                |   Boolean               | required           |false
+isAdvice                 |   Boolean               | required           | false
+service             |   String               |           | n/a
+type             |   ref               | required           | n/a
+isDeleted            |   Boolean              |                    | false
+
+### Product Model:
 
 ## ER diagrm
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
