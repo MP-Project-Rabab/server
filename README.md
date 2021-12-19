@@ -1,16 +1,12 @@
 # Plants Website
 ***
 ## Table of Contents:
-1- Trello
-2- [ Routes. ](#routes)
-
-
-
-
-[Trello For BackEnd](https://trello.com/b/BJPpSSK5/backend)
-
-
-
+1. [ Models. ](#models)
+2. [ ER diagrm. ](#er)
+3. [ Routes. ](#routes)
+4. [ UML diagrm.](#uml)
+5. [ Installation. ](#installation)
+6. [ Additional information. ](#slid)
 
 
 <a name="routes"></a>
@@ -39,8 +35,11 @@
 |GET|```/product```||200|400|allProduct| 
 |PUT|```/product/update```||200|400|updateProduct| 
 |POST|```/product/add```||200|400|addProduct|
-|DELETE|```/product/delete```||200|400|deleteProduct| 
+|DELETE|```/product/delete```||200|400|deleteProduct|
+
+<a name="uml"></a>
 ## UML diagram
+<a name="models"></a>
 ## Models:
 ### Role Model:
 
@@ -119,9 +118,23 @@ ready            |   Boolean               | required  | false
 comment    |   Boolean               | required  | false
 date    |   Boolean               |  required | false
 
+<a name="er"></a>
 ## ER diagrm
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
 
 
+<a name="installation"></a>
 
+## Installation:
+- Clone this folder locally
+- Install all packages using `npm install` command
+- Run `npm run dev` in your command line
+
+<a name="slid"></a>
+
+
+## for more information:
+- [ Slides. ](#slid) 
+- [ Backend Deployed Link. ](#slid)
+- [Trello For BackEnd](https://trello.com/b/BJPpSSK5/backend)
 
