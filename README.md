@@ -68,6 +68,19 @@ comment             |   ref               | required           | n/a
 ready            |   String               |           | true
 rating  |  ref               |                    | n/a
 
+### Rating Model:
+Key           |     Type            |  options  | default value
+------------- | ---------------     | --------- |------
+by            |   ref               |   | n/a
+to   |   ref               | required  | n/a
+
+### Comment Model:
+Key           |     Type            |  options  | default value
+------------- | ---------------     | --------- |------
+by            |   ref               | required  | n/a
+comment    |   String               | required  | n/a
+date    |   Date               |   | n/a
+
 ## ER diagrm
 ![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
 
