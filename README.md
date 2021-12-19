@@ -44,7 +44,8 @@
 ## Models:
 
 ## ER diagrm
-![backend ER Diagram drawio](https://user-images.githubusercontent.com/92247904/146681083-9a70e138-972b-4c26-9864-c2f5c06b4b32.png)
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/92247904/146681349-4db7a955-a0bf-4c2e-88f3-e15bb49e2992.png)
+
 
 
 
