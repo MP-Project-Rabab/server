@@ -7,6 +7,9 @@ dotenv.config();
 const app = express();
 
 
+// imported the db file
+require("./db/index")
+
 //  Middlewares
 app.use(express.json({limit: "30mb", extended: true}));
 app. use(express.urlencoded({limit: "30mb", extended: false}))
