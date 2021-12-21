@@ -10,11 +10,11 @@ userRouter.post("/register", register);
 userRouter.get("/activated/:token", activated);
 userRouter.post("/login", logIn);
 userRouter.get("/profile", profile);
-// userRouter.put("/forget", forgetPass);
-// userRouter.get("/reset-pass/:res-tok", updatePass);
+userRouter.put("/forget", forgetPass);
+userRouter.get("/reset-pass/:res-tok", updatePass);
 // // just for admin
 userRouter.get("/", authentication, authorization, allUser);
-userRouter.delete("/", authentication, authorization, deleteUser);
+userRouter.delete("/delete", authentication, authorization, deleteUser);
 
 
 module.exports = userRouter;
