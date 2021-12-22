@@ -18,7 +18,14 @@ app.use(passport.initialize());
 app.use(morgan("dev"));
 
 
+// import all routers
 
+// user router
+const userRouter = require('./Routers/Routes/user');
+app.use("/user", userRouter);
+// role router
+const roleRouter = require('./Routers/Routes/role')
+app.use("/role", roleRouter);
 
 
 //  PORT 
