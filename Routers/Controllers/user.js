@@ -174,7 +174,7 @@ const forgetPass = (req, res) => {
       to: email,
       from: "cutange1414@hotmail.com",
       subject: "password rest",
-      html: ` <button><a href=${process.env.LOG_PAGE}reset-pass/${token}>reset your password</a></button>`,
+      html: `<a href=${process.env.LOG_PAGE}reset-pass/${token}>reset your password</a>`,
     };
     sgMail
       .send(msg)
@@ -185,15 +185,15 @@ const forgetPass = (req, res) => {
       .catch((error) => {
         console.error(error);
       });
-    userModel
-      .updateOne({ password: userModel.password })
-      .then((result) => {
-        return res.status(201).send(`hi`);
-        // `<button><a href=${process.env.ACTIVE_URL}>re</a></button>`
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
+    // userModel
+    //   .updateOne({ password: userModel.password })
+    //   .then((result) => {
+    //     return res.status(201).send(`hi`);
+    //     // `<button><a href=${process.env.ACTIVE_URL}>re</a></button>`
+    //   })
+    //   .catch((err) => {
+    //     res.status(400).json(err);
+    //   });
   });
 };
 
