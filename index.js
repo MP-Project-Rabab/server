@@ -4,7 +4,7 @@ const cors = require("cors");
 const passport = require("passport");
 const dotenv = require("dotenv") 
 dotenv.config();
-const passport = require("passport");
+
 
 // passport config
 require("./Routers/passport")(passport)
@@ -29,6 +29,9 @@ app.use("/user", userRouter);
 // role router
 const roleRouter = require('./Routers/Routes/role')
 app.use("/role", roleRouter);
+// Posts Router
+const postRouter = require('./Routers/Routes/post')
+app.use("/posts", postRouter);
 
 
 //  PORT 
