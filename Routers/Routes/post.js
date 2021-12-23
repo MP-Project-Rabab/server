@@ -5,7 +5,7 @@ const {newPost, allPost, updatePost, deletePost, postedBy} = require('../Control
 const postRouter = express.Router();
 
 postRouter.post('/post',authentication, newPost)
-// postRouter.get('/',authentication, allPost)
+postRouter.get('/',authentication, allPost)
 // postRouter.get('/profile',authentication, postedBy)
 // postRouter.put('/update',authentication, updatePost)
 // postRouter.delete('/delete',authentication, deletePost)
