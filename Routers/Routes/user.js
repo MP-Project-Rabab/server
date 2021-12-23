@@ -2,7 +2,7 @@ const express = require("express");
 const { register, logIn, allUser,profile, deleteUser, activated, forgetPass, updatePass } = require("../Controllers/user");
 const authentication = require("../Midleware/auth");
 const authorization = require("../Midleware/aouth");
-// const passport = require("passport");
+const passport = require("passport");
 // const {googlePass} = require('../../passport')
 const userRouter = express.Router();
 
@@ -16,5 +16,18 @@ userRouter.get("/reset-pass/:res-tok", updatePass);
 userRouter.get("/", authentication, authorization, allUser);
 userRouter.delete("/delete", authentication, authorization, deleteUser);
 
+// log with Google
+userRouter.get(
+  "/user/auth/google",
+  passport.authenticate("google", { scope: ["profile"] }));
+
+userRouter.get(
+  "/user/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/post");
+  }
+);
 
 module.exports = userRouter;
