@@ -37,7 +37,7 @@ const newPost = (req, res) => {
 
 // update post function
 const updatePost = async (req, res) => {
-  const { desc, img, _id, title } = req.body;
+  const { desc, img, _id, title } = req.query;
   const idToken = req.saveToken.id;
   const postedBy = await postModel.findOne({ _id });
   if (idToken == postedBy.user) {
@@ -51,5 +51,33 @@ const updatePost = async (req, res) => {
     return res.status(403).json("forbidden");
   }
 };
-module.exports = { newPost, allPost, updatePost };
-// ,  deletePost, postedBy };
+
+
+// soft delete post function
+const deletePost = async (req, res) => {
+    const { isDeleted, _id } = req.query;
+    const tokenId = req.saveToken.id;
+    const postedBy = await postModel.findOne({ _id });
+    if (tokenId == postedBy.user) {
+      postModel.findById({ _id }).then(async (result) => {
+        if (result.isDeleted == true) {
+          return res.json({ massege: "this post already have been deleted" });
+        } else {
+          await postModel.findOneAndUpdate(
+            { _id },
+            { $set: { isDeleted } },
+            { new: true }
+          );
+          return res.json({ massege: "deleted successfully" });
+        }
+      });
+    } else {
+      res.status(403).json({ massege: "forbidden" });
+    }
+  };
+
+
+
+
+module.exports = { newPost, allPost, updatePost, deletePost };
+// , postedBy };
