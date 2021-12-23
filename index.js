@@ -4,18 +4,21 @@ const cors = require("cors");
 const passport = require("passport");
 const dotenv = require("dotenv") 
 dotenv.config();
+const passport = require("passport");
+
+// passport config
+require("./Routers/passport")(passport)
 const app = express();
 
-
 // imported the db file
-require("./db/index")
+require("./DB/index")
 
 //  Middlewares
 app.use(express.json({limit: "30mb", extended: true}));
 app. use(express.urlencoded({limit: "30mb", extended: false}))
 app.use(cors());
-app.use(passport.initialize());
 app.use(morgan("dev"));
+app.use(passport.initialize());
 
 
 // import all routers
