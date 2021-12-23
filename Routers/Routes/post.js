@@ -8,7 +8,7 @@ postRouter.post('/post',authentication, newPost)
 postRouter.put('/update',authentication, updatePost)
 
 postRouter.get('/',authentication, allPost)
-// postRouter.get('/profile',authentication, postedBy)
+postRouter.get('/postBy',authentication, postedBy)
 postRouter.delete('/delete',authentication, deletePost)
 
 

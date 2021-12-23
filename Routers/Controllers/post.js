@@ -77,7 +77,20 @@ const deletePost = async (req, res) => {
   };
 
 
+// get post by who post it 
+const postedBy = async (req, res) => {
+    const { user } = req.query;
+  
+    await postModel
+      .find({ user, isDeleted: false })
+      .then((result) => {
+        res.status(200).json(result);
+        console.log(user);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
 
+module.exports = { newPost, allPost, updatePost, deletePost, postedBy };
 
-module.exports = { newPost, allPost, updatePost, deletePost };
-// , postedBy };
