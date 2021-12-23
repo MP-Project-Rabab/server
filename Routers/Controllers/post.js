@@ -5,7 +5,8 @@ const postModel = require("../../DB/Model/post");
 const allPost = (req, res) => {
   postModel
     .find({ isDeleted: false })
-    .then((result) => {
+    .populate('Comment') 
+    .exec((result) => {
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -83,9 +84,10 @@ const postedBy = async (req, res) => {
   
     await postModel
       .find({ user, isDeleted: false })
-      .then((result) => {
+      .populate('Comment') 
+      .exec((result) => {
         res.status(200).json(result);
-        console.log(user);
+        console.log(result);
       })
       .catch((err) => {
         res.status(400).json(err);

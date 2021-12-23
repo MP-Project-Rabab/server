@@ -32,6 +32,9 @@ app.use("/role", roleRouter);
 // Posts Router
 const postRouter = require('./Routers/Routes/post')
 app.use("/posts", postRouter);
+// comment router
+const commentRouter = require('./Routers/Routes/comment')
+app.use("/comments", commentRouter);
 
 
 //  PORT 

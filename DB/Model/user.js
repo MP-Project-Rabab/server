@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   cart: [{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
   shop: [{type: mongoose.Schema.Types.ObjectId, ref: "Product"}],
   service: {type: mongoose.Schema.Types.ObjectId, ref: "ServiceOptions"},
-  feedback: {type: mongoose.Schema.Types.ObjectId, ref: "Comment"}, 
+  feedback: [{type: mongoose.Schema.Types.ObjectId, ref: "Comment"}], 
   ready: {type: mongoose.Schema.Types.ObjectId, ref: "Status",},
   rating: {type: mongoose.Schema.Types.ObjectId, ref: "Rate"}, 
   userType: {type: String,},
