@@ -35,5 +35,21 @@ const newPost = (req, res) => {
     });
 };
 
-module.exports = { newPost, allPost };
-// , , updatePost, deletePost, postedBy };
+// update post function
+const updatePost = async (req, res) => {
+  const { desc, img, _id, title } = req.body;
+  const idToken = req.saveToken.id;
+  const postedBy = await postModel.findOne({ _id });
+  if (idToken == postedBy.user) {
+    await postModel.findByIdAndUpdate(
+      { _id },
+      { $set: { desc, img, title } },
+      { new: true }
+    );
+    res.json("done");
+  } else {
+    return res.status(403).json("forbidden");
+  }
+};
+module.exports = { newPost, allPost, updatePost };
+// ,  deletePost, postedBy };

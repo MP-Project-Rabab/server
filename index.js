@@ -35,7 +35,7 @@ app.use("/posts", postRouter);
 
 
 //  PORT 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {
     console.log(`server running on ${PORT}`);
 })
