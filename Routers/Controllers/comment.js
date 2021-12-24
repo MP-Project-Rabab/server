@@ -34,7 +34,7 @@ const allComment = (req, res) => {
 
 // update comment function
 const updateComment = async (req, res) => {
-  const { comment, _id } = req.body;
+  const { comment, _id } = req.query;
   const tokenId = req.saveToken.id;
   const commentedBy = await commentModel.findOne({ _id });
   if (tokenId == commentedBy.userId) {
@@ -53,7 +53,7 @@ const updateComment = async (req, res) => {
 
 // delete comment function
 const deleteComment = async (req, res) => {
-  const { _id } = req.body;
+  const { _id } = req.query;
   const tokenId = req.saveToken.id;
   const commentedBy = await commentModel.findOne({ _id });
   if (tokenId == commentedBy.userId) {
