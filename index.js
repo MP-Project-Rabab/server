@@ -4,7 +4,7 @@ const cors = require("cors");
 const passport = require("passport");
 const dotenv = require("dotenv") 
 dotenv.config();
-const passport = require("passport");
+
 
 // passport config
 require("./Routers/passport")(passport)
@@ -29,10 +29,16 @@ app.use("/user", userRouter);
 // role router
 const roleRouter = require('./Routers/Routes/role')
 app.use("/role", roleRouter);
+// Posts Router
+const postRouter = require('./Routers/Routes/post')
+app.use("/posts", postRouter);
+// comment router
+const commentRouter = require('./Routers/Routes/comment')
+app.use("/comments", commentRouter);
 
 
 //  PORT 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => {
     console.log(`server running on ${PORT}`);
 })
