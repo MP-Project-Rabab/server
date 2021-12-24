@@ -8,7 +8,7 @@ const authentication = require("../midleware/auth");
 
 
 commentRouter.post('/add', authentication, newComment)
-// commentRouter.get('/all', authentication, allComment)
+commentRouter.get('/all', authentication, allComment)
 // commentRouter.put('/', authentication, updateComment)
 // commentRouter.delete('/', authentication , deleteComment)
 
