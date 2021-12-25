@@ -14,19 +14,28 @@ const allPost = (req, res) => {
   //   res.status(400).json(err);
   // });
 };
-// get all tips
 
+// get all tips
 const allTips = (req, res) => {
   postModel
-    .find({ isAdvice: true })
+    .find({ isAdvice: true, isDeleted: false  })
     .populate("comment")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
     });
-  // .catch((err) => {
-  //   res.status(400).json(err);
-  // });
+};
+
+// get all Problems
+const allProblems = (req, res) => {
+  postModel
+    .find({ isProblem: true, isDeleted: false  })
+    .populate("comment")
+    .exec((err, result) => {
+      if (err) return handleError(err);
+      res.status(200).json(result);
+    });
+  
 };
 
 // creat new post
@@ -53,7 +62,7 @@ const newPost = (req, res) => {
 
 // update post function
 const updatePost = async (req, res) => {
-  const { desc, img, _id, title } = req.query;
+  const { desc, img, _id, title } = req.body;
   const idToken = req.saveToken.id;
   const postedBy = await postModel.findOne({ _id });
   if (idToken == postedBy.user) {
@@ -107,4 +116,4 @@ const postedBy = async (req, res) => {
     });
 };
 
-module.exports = { newPost, allPost, updatePost, deletePost, postedBy, allTips };
+module.exports = { newPost, allPost, updatePost, deletePost, postedBy, allTips, allProblems };
