@@ -14,6 +14,20 @@ const allPost = (req, res) => {
   //   res.status(400).json(err);
   // });
 };
+// get all tips
+
+const allTips = (req, res) => {
+  postModel
+    .find({ isAdvice: true })
+    .populate("comment")
+    .exec((err, result) => {
+      if (err) return handleError(err);
+      res.status(200).json(result);
+    });
+  // .catch((err) => {
+  //   res.status(400).json(err);
+  // });
+};
 
 // creat new post
 const newPost = (req, res) => {
@@ -93,4 +107,4 @@ const postedBy = async (req, res) => {
     });
 };
 
-module.exports = { newPost, allPost, updatePost, deletePost, postedBy };
+module.exports = { newPost, allPost, updatePost, deletePost, postedBy, allTips };
