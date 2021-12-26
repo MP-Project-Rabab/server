@@ -7,9 +7,9 @@ const postRouter = express.Router();
 postRouter.post('/post',authentication, newPost)
 postRouter.put('/update',authentication, updatePost)
 
-postRouter.get('/',authentication, allPost)
-postRouter.get('/tips',authentication, allTips)
-postRouter.get('/problems',authentication, allProblems)
+postRouter.get('/', allPost)
+postRouter.get('/tips', allTips)
+postRouter.get('/problems', allProblems)
 postRouter.get('/postBy',authentication, postedBy)
 postRouter.delete('/delete',authentication, deletePost)
 
