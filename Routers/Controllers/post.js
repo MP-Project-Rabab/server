@@ -115,6 +115,31 @@ const postedBy = async (req, res) => {
     });
 };
 
+// Get not Approved Posts
+const notApproved = (req, res) => {
+  postModel
+    .find({ isDeleted: false, isApproved: false })
+    .populate("comment")
+    .populate("user")
+    .exec((err, result) => {
+      if (err) return handleError(err);
+      res.status(200).json(result);
+    });
+};
+
+// update all Pots to approval function
+const approved = async (req, res) => {
+  const { isApproved, _id } = req.body;
+  await postModel
+    .findByIdAndUpdate({ _id }, { $set: { isApproved } }, { new: true })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json("you don't have permission");
+    });
+};
+
 module.exports = {
   newPost,
   allPost,
@@ -123,4 +148,6 @@ module.exports = {
   postedBy,
   allTips,
   allProblems,
+  notApproved,
+  approved,
 };
