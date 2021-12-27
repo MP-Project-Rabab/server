@@ -9,7 +9,7 @@ const {
 const authentication = require("../midleware/auth");
 
 commentRouter.post("/add", authentication, newComment);
-commentRouter.get("/all", authentication, allComment);
+commentRouter.get("/all", allComment);
 commentRouter.put("/update", authentication, updateComment);
 commentRouter.delete("/delete", authentication, deleteComment);
 

@@ -4,22 +4,21 @@ const postModel = require("../../DB/Model/post");
 
 const allPost = (req, res) => {
   postModel
-    .find({ isDeleted: false })
+    .find({ isDeleted: false, isApproved: true })
     .populate("comment")
+    .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
     });
-  // .catch((err) => {
-  //   res.status(400).json(err);
-  // });
 };
 
 // get all tips
 const allTips = (req, res) => {
   postModel
-    .find({ isAdvice: true, isDeleted: false  })
+    .find({ isAdvice: true, isDeleted: false, isApproved: true })
     .populate("comment")
+    .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
@@ -29,13 +28,13 @@ const allTips = (req, res) => {
 // get all Problems
 const allProblems = (req, res) => {
   postModel
-    .find({ isProblem: true, isDeleted: false  })
+    .find({ isProblem: true, isDeleted: false, isApproved: true })
     .populate("comment")
+    .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
     });
-  
 };
 
 // creat new post
@@ -116,4 +115,39 @@ const postedBy = async (req, res) => {
     });
 };
 
-module.exports = { newPost, allPost, updatePost, deletePost, postedBy, allTips, allProblems };
+// Get not Approved Posts
+const notApproved = (req, res) => {
+  postModel
+    .find({ isDeleted: false, isApproved: false })
+    .populate("comment")
+    .populate("user")
+    .exec((err, result) => {
+      if (err) return handleError(err);
+      res.status(200).json(result);
+    });
+};
+
+// update all Pots to approval function
+const approved = async (req, res) => {
+  const { isApproved, _id } = req.body;
+  await postModel
+    .findByIdAndUpdate({ _id }, { $set: { isApproved } }, { new: true })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json("you don't have permission");
+    });
+};
+
+module.exports = {
+  newPost,
+  allPost,
+  updatePost,
+  deletePost,
+  postedBy,
+  allTips,
+  allProblems,
+  notApproved,
+  approved,
+};
