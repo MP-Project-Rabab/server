@@ -60,12 +60,12 @@ const approved = async (req, res) => {
 };
 
 // delete product function
-const deleteproduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
     const { _id } = req.query;
     const tokenId = req.saveToken.id;
-    const commentedBy = await commentModel.findOne({ _id });
-    if (tokenId == commentedBy.userId) {
-      await commentModel
+    const productBy = await productModel.findOne({ _id });
+    if (tokenId == productBy.userId) {
+      await productModel
         .findByIdAndDelete(_id)
         .then(() => {
           res.status(200).json({ massege: "deleted successfully" });
@@ -83,5 +83,5 @@ module.exports = {
   newProduct,
   approved,
   notApproved,
-  deleteproduct,
+  deleteProduct
 };
