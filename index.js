@@ -14,7 +14,7 @@ require("./DB/index");
 
 //  Middlewares
 app.use(express.json({ limit: "30mb", extended: true }));
-app.use(express.urlencoded({ limit: "30mb", extended: false }));
+// app.use(express.urlencoded({ limit: "30mb", extended: false }));
 app.use(cors());
 app.use(morgan("dev"));
 app.use(passport.initialize());

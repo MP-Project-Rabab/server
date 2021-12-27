@@ -59,9 +59,29 @@ const approved = async (req, res) => {
     });
 };
 
+// delete product function
+const deleteProduct = async (req, res) => {
+    const { _id } = req.query;
+    const tokenId = req.saveToken.id;
+    const productBy = await productModel.findOne({ _id });
+    if (tokenId == productBy.userId) {
+      await productModel
+        .findByIdAndDelete(_id)
+        .then(() => {
+          res.status(200).json({ massege: "deleted successfully" });
+        })
+        .catch((err) => {
+          res.status(400).json(err);
+        });
+    } else {
+      res.status(403).json("forbidden");
+    }
+  };
+
 module.exports = {
   allProduct,
   newProduct,
   approved,
   notApproved,
+  deleteProduct
 };
