@@ -5,6 +5,8 @@ const passport = require("passport");
 const dotenv = require("dotenv");
 dotenv.config();
 
+
+
 // passport config
 require("./Routers/passport")(passport);
 const app = express();
@@ -36,6 +38,9 @@ app.use("/comments", commentRouter);
 // comment router
 const productRouter = require("./Routers/Routes/product");
 app.use("/products", productRouter);
+// rating router
+const rateRouter = require("./Routers/Routes/rate");
+app.use("/rates", rateRouter);
 
 //  PORT
 const PORT = process.env.PORT || 5050;
