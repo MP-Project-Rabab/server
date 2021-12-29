@@ -1,5 +1,16 @@
 const express = require("express");
-const { register, logIn, allUser,profile, deleteUser, activated, forgetPass, updatePass } = require("../Controllers/user");
+const {
+  register,
+  logIn,
+  allUser,
+  profile,
+  deleteUser,
+  activated,
+  forgetPass,
+  updatePass,
+  updateProfile,
+  updateUserType
+} = require("../Controllers/user");
 const authentication = require("../Midleware/auth");
 const authorization = require("../Midleware/aouth");
 const passport = require("passport");
@@ -9,17 +20,20 @@ const userRouter = express.Router();
 userRouter.post("/register", register);
 userRouter.get("/activated/:token", activated);
 userRouter.post("/login", logIn);
-userRouter.get("/profile", profile);
+userRouter.get("/profile", authentication, profile);
+userRouter.put("/update",authentication, updateProfile);
 userRouter.put("/forget", forgetPass);
 userRouter.get("/reset-pass/:res-token", updatePass);
 // // just for admin
+userRouter.put("/user-type", authentication, authorization, updateUserType);
 userRouter.get("/", authentication, authorization, allUser);
 userRouter.delete("/delete", authentication, authorization, deleteUser);
 
 // log with Google
 userRouter.get(
   "/user/auth/google",
-  passport.authenticate("google", { scope: ["profile"] }));
+  passport.authenticate("google", { scope: ["profile"] })
+);
 
 userRouter.get(
   "/user/auth/google/callback",
