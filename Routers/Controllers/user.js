@@ -5,7 +5,13 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const jwt = require("jsonwebtoken");
 const SECRETKEY = process.env.SECRET_KEY;
 const activeKey = process.env.ACTIVE_KEY;
-
+const cloudinary = require("cloudinary").v2;
+// cloudinary configuration
+cloudinary.config({
+  cloud_name: "dtj6j4tpa",
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 //bcrypt > library to hash passwords.
 const bcrypt = require("bcrypt");
 const SALT = Number(process.env.SALT);
@@ -134,6 +140,45 @@ const profile = async (req, res) => {
     });
 };
 
+//  Update user profile
+
+const updateProfile = async (req, res) => {
+  const { userName, avatar, location, certifacte, _id } = req.body;
+  const cloude = await cloudinary.uploader.upload(avatar, {
+    folder: "profile-img",
+  });
+
+  await userModel
+    .findByIdAndUpdate(
+      { _id },
+      { $set: { userName, avatar: cloude.secure_url, location, certifacte } },
+      { new: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(403).json("forbidden");
+    });
+};
+//  Update user Type for Admin
+
+const updateUserType = async (req, res) => {
+  const { userType, _id } = req.body;
+  await userModel
+    .findByIdAndUpdate(
+      { _id },
+      { $set: { userType } },
+      { new: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(403).json("forbidden");
+    });
+};
+
 // delete user function
 
 const deleteUser = async (req, res) => {
@@ -157,8 +202,6 @@ const deleteUser = async (req, res) => {
       res.status(400).json(err);
     });
 };
-
-
 
 // forget password function
 const forgetPass = (req, res) => {
@@ -224,4 +267,6 @@ module.exports = {
   deleteUser,
   forgetPass,
   updatePass,
+  updateProfile,
+  updateUserType
 };

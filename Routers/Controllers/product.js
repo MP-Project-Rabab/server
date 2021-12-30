@@ -35,8 +35,9 @@ const notApproved = (req, res) => {
 // Add new Product
 const newProduct = async (req, res) => {
   const { seller, img, name, price, Quantity } = req.body;
-  const cloude = await cloudinary.uploader.upload(img, {folder: 'product-img'})
-  // cloudinary.uploader.
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "product-img",
+  });
   const product = new productModel({
     img: cloude.secure_url,
     seller,

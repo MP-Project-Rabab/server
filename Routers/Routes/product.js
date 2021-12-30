@@ -7,7 +7,7 @@ const {
   newProduct,
   approved,
   notApproved,
-  deleteProduct
+  deleteProduct,
 } = require("../Controllers/product");
 
 const productRouter = express.Router();
@@ -15,7 +15,7 @@ const productRouter = express.Router();
 productRouter.get("/all", allProduct);
 productRouter.post("/add", authentication, newProduct);
 
-productRouter.delete('/delete',authentication, deleteProduct)
+productRouter.delete("/delete", authentication, deleteProduct);
 // productRouter.put('/update',authentication, updatePost)
 
 // For Admin
