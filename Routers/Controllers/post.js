@@ -1,4 +1,11 @@
 const postModel = require("../../DB/Model/post");
+const cloudinary = require("cloudinary").v2;
+// cloudinary configuration
+cloudinary.config({
+  cloud_name: "dtj6j4tpa",
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 // get all post
 
@@ -38,11 +45,14 @@ const allProblems = (req, res) => {
 };
 
 // creat new post
-const newPost = (req, res) => {
+const newPost = async (req, res) => {
   const { user, desc, img, isAdvice, isProblem, title } = req.body;
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "post-img",
+  });
   const post = new postModel({
     desc,
-    img,
+    img: cloude.secure_url,
     user,
     isAdvice,
     isProblem,
