@@ -5,7 +5,7 @@ const postModel = require("../../DB/Model/post");
 const allPost = (req, res) => {
   postModel
     .find({ isDeleted: false, isApproved: true })
-    .populate("comment")
+    .populate("commented")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -17,7 +17,7 @@ const allPost = (req, res) => {
 const allTips = (req, res) => {
   postModel
     .find({ isAdvice: true, isDeleted: false, isApproved: true })
-    .populate("comment")
+    .populate("commented")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -29,7 +29,7 @@ const allTips = (req, res) => {
 const allProblems = (req, res) => {
   postModel
     .find({ isProblem: true, isDeleted: false, isApproved: true })
-    .populate("comment")
+    .populate("commented")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -99,27 +99,42 @@ const deletePost = async (req, res) => {
   }
 };
 
-// get post by who post it
-const postedBy = async (req, res) => {
-  const { user } = req.query;
-
-  await postModel
-    .find({ user, isDeleted: false })
-    .populate("Comment")
-    .exec((result) => {
+// get one post 
+const postedBy = (req, res) => {
+  const { _id } = req.query;
+  postModel
+    .findOne({ _id })
+    .populate("user")
+    .populate("commented")
+    .then((result) => {
       res.status(200).json(result);
-      console.log(result);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(400).json("you don't have permission");
     });
 };
+
+// // get post by who post it
+// const postedBy = async (req, res) => {
+//   const { user } = req.query;
+
+//   await postModel
+//     .find({ user, isDeleted: false })
+//     .populate("commented")
+//     .exec((result) => {
+//       res.status(200).json(result);
+//       console.log(result);
+//     })
+//     .catch((err) => {
+//       res.status(400).json(err);
+//     });
+// };
 
 // Get not Approved Posts
 const notApproved = (req, res) => {
   postModel
     .find({ isDeleted: false, isApproved: false })
-    .populate("comment")
+    .populate("commented")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
