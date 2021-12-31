@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema({
   isApproved: { type: Boolean, default: false },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   type: { type: mongoose.Schema.Types.ObjectId, ref: "ServiceOptions" },
-  comment: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  commented: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 });
 
 module.exports = mongoose.model("Post", postSchema);

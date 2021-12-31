@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema({
   Quantity: { type: Number, required: true },
   seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   comment: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-  rating: { type: mongoose.Schema.Types.ObjectId, ref: "Rate" },
+  ratings: { type: mongoose.Schema.Types.ObjectId, ref: "Rate" },
   isApproved: { type: Boolean, default: false },
 });
 

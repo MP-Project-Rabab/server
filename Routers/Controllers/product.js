@@ -12,9 +12,9 @@ cloudinary.config({
 const allProduct = (req, res) => {
   productModel
     .find({ isApproved: true })
-    .populate("comment")
-    .populate("seller")
-    .populate("rating")
+    .populate("comment ratings seller")
+    // .populate("seller")
+    // .populate("rating")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
@@ -23,9 +23,9 @@ const allProduct = (req, res) => {
 const notApproved = (req, res) => {
   productModel
     .find({ isApproved: false })
-    .populate("comment")
-    .populate("seller")
-    .populate("rating")
+    .populate("comment ratings seller")
+    // .populate("seller")
+    // .populate("rating")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
