@@ -1,11 +1,18 @@
 const postModel = require("../../DB/Model/post");
+const cloudinary = require("cloudinary").v2;
+// cloudinary configuration
+cloudinary.config({
+  cloud_name: "dtj6j4tpa",
+  api_key: process.env.CLOUDINARY_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
 
 // get all post
 
 const allPost = (req, res) => {
   postModel
     .find({ isDeleted: false, isApproved: true })
-    .populate("commented")
+    .populate("commentes")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -17,7 +24,7 @@ const allPost = (req, res) => {
 const allTips = (req, res) => {
   postModel
     .find({ isAdvice: true, isDeleted: false, isApproved: true })
-    .populate("commented")
+    .populate("commentes")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -29,7 +36,7 @@ const allTips = (req, res) => {
 const allProblems = (req, res) => {
   postModel
     .find({ isProblem: true, isDeleted: false, isApproved: true })
-    .populate("commented")
+    .populate("commentes")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -38,11 +45,14 @@ const allProblems = (req, res) => {
 };
 
 // creat new post
-const newPost = (req, res) => {
+const newPost = async (req, res) => {
   const { user, desc, img, isAdvice, isProblem, title } = req.body;
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "post-img",
+  });
   const post = new postModel({
     desc,
-    img,
+    img: cloude.secure_url,
     user,
     isAdvice,
     isProblem,
@@ -100,12 +110,11 @@ const deletePost = async (req, res) => {
 };
 
 // get one post 
-const postedBy = (req, res) => {
+const onePost = (req, res) => {
   const { _id } = req.query;
   postModel
     .findOne({ _id })
-    .populate("user")
-    .populate("commented")
+    .populate("user commentes")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -120,7 +129,7 @@ const postedBy = (req, res) => {
 
 //   await postModel
 //     .find({ user, isDeleted: false })
-//     .populate("commented")
+//     .populate("commentes")
 //     .exec((result) => {
 //       res.status(200).json(result);
 //       console.log(result);
@@ -134,7 +143,7 @@ const postedBy = (req, res) => {
 const notApproved = (req, res) => {
   postModel
     .find({ isDeleted: false, isApproved: false })
-    .populate("commented")
+    .populate("commentes")
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -160,7 +169,7 @@ module.exports = {
   allPost,
   updatePost,
   deletePost,
-  postedBy,
+  onePost,
   allTips,
   allProblems,
   notApproved,

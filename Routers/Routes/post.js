@@ -7,7 +7,7 @@ const {
   allPost,
   updatePost,
   deletePost,
-  postedBy,
+  onePost,
   allTips,
   allProblems,
   notApproved,
@@ -22,7 +22,7 @@ postRouter.put("/update", authentication, updatePost);
 postRouter.get("/", allPost);
 postRouter.get("/tips", allTips);
 postRouter.get("/problems", allProblems);
-postRouter.get("/postBy", authentication, postedBy);
+postRouter.get("/onePost", authentication, onePost);
 postRouter.delete("/delete", authentication, deletePost);
 
 // For Admin
