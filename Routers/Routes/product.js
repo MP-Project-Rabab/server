@@ -8,12 +8,14 @@ const {
   approved,
   notApproved,
   deleteProduct,
+  oneProduct
 } = require("../Controllers/product");
 
 const productRouter = express.Router();
 
 productRouter.get("/all", allProduct);
 productRouter.post("/add", authentication, newProduct);
+productRouter.put("/one", authentication, oneProduct);
 
 productRouter.delete("/delete", authentication, deleteProduct);
 // productRouter.put('/update',authentication, updatePost)

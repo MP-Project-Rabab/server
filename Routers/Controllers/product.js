@@ -1,4 +1,6 @@
 const productModel = require("../../DB/Model/product");
+const userModel = require("../../DB/Model/user");
+
 const cloudinary = require("cloudinary").v2;
 // cloudinary configuration
 cloudinary.config({
@@ -68,18 +70,7 @@ const approved = async (req, res) => {
       res.status(400).json("you don't have permission");
     });
 };
-// update product approval function
-const updateCart = async (req, res) => {
-  const { cart, _id } = req.body;
-  await productModel
-    .findByIdAndUpdate({ _id }, { $set: { cart } }, { new: true })
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(400).json("you don't have permission");
-    });
-};
+
 
 // delete product function
 const deleteProduct = async (req, res) => {
@@ -100,10 +91,27 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+
+const oneProduct = (req, res) => {
+  const {_id, user} = req.body;
+  productModel
+    .findOne({_id})
+    .then(async (result) => {
+      await userModel.findByIdAndUpdate(user, {$push: {cart:result}})
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+      console.log(err);
+    });
+}
+
+
 module.exports = {
   allProduct,
   newProduct,
   approved,
   notApproved,
   deleteProduct,
+  oneProduct
 };
