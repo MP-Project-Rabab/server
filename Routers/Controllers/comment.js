@@ -1,17 +1,20 @@
 const commentModel = require("../../DB/Model/comment");
+const postModel = require('./../../DB/Model/post')
 
 // creat new comment
 const newComment = (req, res) => {
-  const { comment, postId, userId } = req.body;
+  const { comment, postId, userId, productId } = req.body;
   const comments = new commentModel({
     comment,
     postId,
     userId,
+    productId
   });
 
   comments
     .save()
-    .then((result) => {
+    .then(async (result) => {
+      await postModel.findByIdAndUpdate(postId,{$push: {commentes:result._id}})
       res.status(201).json(result);
     })
     .catch((err) => {
@@ -24,6 +27,7 @@ const newComment = (req, res) => {
 const allComment = (req, res) => {
   commentModel
     .find()
+    .populate("postId userId productId")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -56,10 +60,12 @@ const deleteComment = async (req, res) => {
   const { _id } = req.query;
   const tokenId = req.saveToken.id;
   const commentedBy = await commentModel.findOne({ _id });
+ 
   if (tokenId == commentedBy.userId) {
     await commentModel
       .findByIdAndDelete(_id)
-      .then(() => {
+      .then(async () => {
+        // await postModel.findByIdAndUpdate(commentedBy.postId, {$pull: {commentes: commentedBy._id}})
         res.status(200).json({ massege: "deleted successfully" });
       })
       .catch((err) => {

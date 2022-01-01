@@ -12,23 +12,23 @@ cloudinary.config({
 const allProduct = (req, res) => {
   productModel
     .find({ isApproved: true })
-    .populate("comment ratings seller")
-    // .populate("seller")
-    // .populate("rating")
-    .exec((err, result) => {
-      if (err) return handleError(err);
+    .populate("ratings comment seller")
+    .then((result) => {
       res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+      console.log(err);
     });
 };
 const notApproved = (req, res) => {
   productModel
     .find({ isApproved: false })
-    .populate("comment ratings seller")
-    // .populate("seller")
-    // .populate("rating")
-    .exec((err, result) => {
-      if (err) return handleError(err);
+    .then((result) => {
       res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
     });
 };
 
@@ -68,13 +68,25 @@ const approved = async (req, res) => {
       res.status(400).json("you don't have permission");
     });
 };
+// update product approval function
+const updateCart = async (req, res) => {
+  const { cart, _id } = req.body;
+  await productModel
+    .findByIdAndUpdate({ _id }, { $set: { cart } }, { new: true })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json("you don't have permission");
+    });
+};
 
 // delete product function
 const deleteProduct = async (req, res) => {
   const { _id } = req.query;
   const tokenId = req.saveToken.id;
-  const productBy = await productModel.findOne({ _id });
-  if (tokenId == productBy.userId) {
+  const productId = await productModel.findOne({ _id });
+  if (tokenId == productId.userId) {
     await productModel
       .findByIdAndDelete(_id)
       .then(() => {
