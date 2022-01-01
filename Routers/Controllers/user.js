@@ -132,6 +132,7 @@ const profile = async (req, res) => {
   const { _id } = req.query;
   userModel
     .findOne({ _id })
+    .populate("cart")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -143,7 +144,7 @@ const profile = async (req, res) => {
 //  Update user profile
 
 const updateProfile = async (req, res) => {
-  const { userName, avatar, location, certifacte, _id } = req.body;
+  const { userName, avatar, location, certifacte, _id, cart } = req.body;
   const cloude = await cloudinary.uploader.upload(avatar, {
     folder: "profile-img",
   });
@@ -151,9 +152,18 @@ const updateProfile = async (req, res) => {
   await userModel
     .findByIdAndUpdate(
       { _id },
-      { $set: { userName, avatar: cloude.secure_url, location, certifacte } },
+      {
+        $set: {
+          userName,
+          avatar: cloude.secure_url,
+          location,
+          certifacte,
+          cart,
+        },
+      },
       { new: true }
     )
+   
     .then((result) => {
       res.status(200).json(result);
     })
@@ -161,16 +171,12 @@ const updateProfile = async (req, res) => {
       res.status(403).json("forbidden");
     });
 };
-//  Update user Type for Admin
 
+//  Update user Type for Admin
 const updateUserType = async (req, res) => {
   const { userType, _id } = req.body;
   await userModel
-    .findByIdAndUpdate(
-      { _id },
-      { $set: { userType } },
-      { new: true }
-    )
+    .findByIdAndUpdate({ _id }, { $set: { userType } }, { new: true })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -268,5 +274,5 @@ module.exports = {
   forgetPass,
   updatePass,
   updateProfile,
-  updateUserType
+  updateUserType,
 };
