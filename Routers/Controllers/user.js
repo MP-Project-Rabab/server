@@ -178,7 +178,6 @@ const updateProfile = async (req, res) => {
 //  Update user Type for Admin
 const updateUserType = async (req, res) => {
   const { userType, _id } = req.body;
-  console.log(_id);
   await userModel
     .findByIdAndUpdate({ _id }, { $set: { userType } }, { new: true })
     .then((result) => {
