@@ -21,34 +21,38 @@ const userModel = require("../../DB/Model/user");
 // Register function
 const register = async (req, res) => {
   const { userName, email, password, role } = req.body;
-  const savePass = await bcrypt.hash(password, SALT);
-  const data = {
-    userName,
-    email,
-    password: savePass,
-    role,
-  };
-  // /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/
-  const token = jwt.sign(data, activeKey, { expiresIn: "60m" });
+  if (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)) {
+    const savePass = await bcrypt.hash(password, SALT);
+    const data = {
+      userName,
+      email,
+      password: savePass,
+      role,
+    };
+  
+    const token = jwt.sign(data, activeKey, { expiresIn: "60m" });
 
-  // Sendgrid/mail
-  const msg = {
-    to: email,
-    from: "cutange1414@hotmail.com",
-    subject: "Email verification",
-    text: "Please verificate your email",
-    html: `<a href=${process.env.ACTIVE_URL}/user/activated/${token} >verificate your email</a>`,
-  };
+    // Sendgrid/mail
+    const msg = {
+      to: email,
+      from: "cutange1414@hotmail.com",
+      subject: "Email verification",
+      text: "Please verificate your email",
+      html: `<a href=${process.env.ACTIVE_URL}/user/activated/${token} >verificate your email</a>`,
+    };
 
-  sgMail
-    .send(msg)
-    .then(() => {
-      console.log("Email sent");
-      res.status(201).json("Email has been sent, activate it");
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+        res.status(201).json("Email has been sent, activate it");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } else {
+    res.status(210).json("you need to insert a complix password");
+  }
 };
 
 const activated = (req, res) => {
@@ -142,7 +146,6 @@ const profile = async (req, res) => {
 };
 
 //  Update user profile
-
 const updateProfile = async (req, res) => {
   const { userName, avatar, location, certifacte, _id, cart } = req.body;
   const cloude = await cloudinary.uploader.upload(avatar, {
@@ -163,7 +166,7 @@ const updateProfile = async (req, res) => {
       },
       { new: true }
     )
-   
+
     .then((result) => {
       res.status(200).json(result);
     })
@@ -175,6 +178,7 @@ const updateProfile = async (req, res) => {
 //  Update user Type for Admin
 const updateUserType = async (req, res) => {
   const { userType, _id } = req.body;
+  console.log(_id);
   await userModel
     .findByIdAndUpdate({ _id }, { $set: { userType } }, { new: true })
     .then((result) => {
@@ -184,6 +188,7 @@ const updateUserType = async (req, res) => {
       res.status(403).json("forbidden");
     });
 };
+
 
 // delete user function
 
