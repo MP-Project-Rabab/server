@@ -75,7 +75,7 @@ const activated = (req, res) => {
           res
             .status(201)
             .send(
-              `<h1>Email has been activated</h1> <button><a href=${process.env.LOG_PAGE}/login>Log In</a></button>`
+              `<h1>Email has been activated</h1> <button><a href=${process.env.LOG_PAGE}login>Log In</a></button>`
             );
         })
         .catch((err) => {
@@ -178,7 +178,6 @@ const updateProfile = async (req, res) => {
 //  Update user Type for Admin
 const updateUserType = async (req, res) => {
   const { userType, _id } = req.body;
-  console.log(_id);
   await userModel
     .findByIdAndUpdate({ _id }, { $set: { userType } }, { new: true })
     .then((result) => {

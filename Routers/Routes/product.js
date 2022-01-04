@@ -8,17 +8,20 @@ const {
   approved,
   notApproved,
   deleteProduct,
-  oneProduct
+  oneProduct,
+  deleteItem
 } = require("../Controllers/product");
 
 const productRouter = express.Router();
 
 productRouter.get("/all", allProduct);
 productRouter.post("/add", authentication, newProduct);
-productRouter.put("/one", authentication, oneProduct);
-
 productRouter.delete("/delete", authentication, deleteProduct);
 // productRouter.put('/update',authentication, updatePost)
+// route for adding item to cart
+productRouter.put("/one", authentication, oneProduct);
+// route for deleting item from cart
+productRouter.put("/cart", authentication, deleteItem);
 
 // For Admin
 productRouter.get("/notAprove", authentication, authorization, notApproved);

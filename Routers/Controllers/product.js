@@ -91,13 +91,28 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-
+// to add item to cart
 const oneProduct = (req, res) => {
   const {_id, user} = req.body;
   productModel
     .findOne({_id})
     .then(async (result) => {
       await userModel.findByIdAndUpdate(user, {$push: {cart:result}})
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+      console.log(err);
+    });
+}
+// delete item from the cart
+const deleteItem = (req, res) => {
+  const {_id, user} = req.body;
+  productModel
+    .findOne({_id})
+    .then(async (result) => {
+        // await postModel.findByIdAndUpdate(commentedBy.postId, {$pull: {commentes: commentedBy._id}})
+      await userModel.findByIdAndUpdate(user, {$pull: {cart:result._id}})
       res.status(200).json(result);
     })
     .catch((err) => {
@@ -113,5 +128,6 @@ module.exports = {
   approved,
   notApproved,
   deleteProduct,
-  oneProduct
+  oneProduct,
+  deleteItem
 };
