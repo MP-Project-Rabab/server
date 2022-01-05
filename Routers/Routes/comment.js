@@ -6,7 +6,7 @@ const {
   deleteComment,
   allComment,
 } = require("../Controllers/comment");
-const authentication = require("../midleware/auth");
+const authentication = require("./../Midleware/auth");
 
 commentRouter.post("/add", authentication, newComment);
 commentRouter.get("/all", allComment);
