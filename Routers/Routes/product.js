@@ -9,15 +9,18 @@ const {
   notApproved,
   deleteProduct,
   oneProduct,
-  deleteItem
+  deleteItem,
+  updateProduct,
+  productBy
 } = require("../Controllers/product");
 
 const productRouter = express.Router();
 
 productRouter.get("/all", allProduct);
+productRouter.get("/by", productBy);
 productRouter.post("/add", authentication, newProduct);
 productRouter.delete("/delete", authentication, deleteProduct);
-// productRouter.put('/update',authentication, updatePost)
+productRouter.put('/update',authentication, updateProduct)
 // route for adding item to cart
 productRouter.put("/one", authentication, oneProduct);
 // route for deleting item from cart
