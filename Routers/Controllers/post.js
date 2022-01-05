@@ -74,10 +74,13 @@ const updatePost = async (req, res) => {
   const { desc, img, _id, title } = req.body;
   const idToken = req.saveToken.id;
   const postedBy = await postModel.findOne({ _id });
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "post-img",
+  });
   if (idToken == postedBy.user) {
     await postModel.findByIdAndUpdate(
       { _id },
-      { $set: { desc, img, title } },
+      { $set: { desc, img: cloude.secure_url, title } },
       { new: true }
     );
     res.json("done");

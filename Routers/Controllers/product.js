@@ -74,10 +74,11 @@ const approved = async (req, res) => {
 
 // delete product function
 const deleteProduct = async (req, res) => {
-  const { _id } = req.query;
+  const { _id, adminId } = req.query;
   const tokenId = req.saveToken.id;
   const productId = await productModel.findOne({ _id });
-  if (tokenId == productId.userId) {
+  const ad = await userModel.findById(adminId);
+  if (tokenId == productId.seller || ad.userType == "admin") {
     await productModel
       .findByIdAndDelete(_id)
       .then(() => {
@@ -91,6 +92,31 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+//  update product
+const updateProduct = async (req, res) => {
+  const {_id, price, img, name,Quantity } = req.body;
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "product-img",
+  });
+  const idToken = req.saveToken.id;
+  const productId = await productModel.findById( _id );
+  if (idToken == productId.seller) {
+    await productModel.findByIdAndUpdate(
+      { _id },
+      { $set: { price, img: cloude.secure_url, name,Quantity } },
+      { new: true }
+    )
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json("you don't have permission");
+    });
+  } else {
+    return res.status(403).json("forbidden");
+  }
+};
 // to add item to cart
 const oneProduct = (req, res) => {
   const {_id, user} = req.body;
@@ -111,7 +137,6 @@ const deleteItem = (req, res) => {
   productModel
     .findOne({_id})
     .then(async (result) => {
-        // await postModel.findByIdAndUpdate(commentedBy.postId, {$pull: {commentes: commentedBy._id}})
       await userModel.findByIdAndUpdate(user, {$pull: {cart:result._id}})
       res.status(200).json(result);
     })
@@ -121,6 +146,20 @@ const deleteItem = (req, res) => {
     });
 }
 
+//  Get all product beloang to user
+const productBy = async (req, res) => {
+    const { user } = req.query;
+  
+    await productModel
+      .find({ user })
+    
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  };
 
 module.exports = {
   allProduct,
@@ -129,5 +168,7 @@ module.exports = {
   notApproved,
   deleteProduct,
   oneProduct,
-  deleteItem
+  deleteItem,
+  updateProduct,
+  productBy
 };

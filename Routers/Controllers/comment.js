@@ -1,5 +1,5 @@
 const commentModel = require("../../DB/Model/comment");
-const postModel = require('./../../DB/Model/post')
+const postModel = require("./../../DB/Model/post");
 
 // creat new comment
 const newComment = (req, res) => {
@@ -8,13 +8,15 @@ const newComment = (req, res) => {
     comment,
     postId,
     userId,
-    productId
+    productId,
   });
 
   comments
     .save()
     .then(async (result) => {
-      await postModel.findByIdAndUpdate(postId,{$push: {commentes:result._id}})
+      await postModel.findByIdAndUpdate(postId, {
+        $push: { commentes: result._id },
+      });
       res.status(201).json(result);
     })
     .catch((err) => {
@@ -60,12 +62,14 @@ const deleteComment = async (req, res) => {
   const { _id } = req.query;
   const tokenId = req.saveToken.id;
   const commentedBy = await commentModel.findOne({ _id });
- 
+
   if (tokenId == commentedBy.userId) {
     await commentModel
       .findByIdAndDelete(_id)
       .then(async () => {
-        // await postModel.findByIdAndUpdate(commentedBy.postId, {$pull: {commentes: commentedBy._id}})
+        await postModel.findByIdAndUpdate(commentedBy.postId, {
+          $pull: { commentes: commentedBy._id },
+        });
         res.status(200).json({ massege: "deleted successfully" });
       })
       .catch((err) => {
