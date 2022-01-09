@@ -50,7 +50,8 @@ const newProduct = async (req, res) => {
 
   product
     .save()
-    .then((result) => {
+    .then(async (result) => {
+      await userModel.findByIdAndUpdate(seller, {$push: {shop:result._id}})
       res.status(201).json(result);
     })
     .catch((err) => {
@@ -151,7 +152,7 @@ const productBy = async (req, res) => {
     const { user } = req.query;
   
     await productModel
-      .find({ user })
+      .findOne({ user })
     
       .then((result) => {
         res.status(200).json(result);

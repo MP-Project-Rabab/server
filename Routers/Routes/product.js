@@ -17,7 +17,7 @@ const {
 const productRouter = express.Router();
 
 productRouter.get("/all", allProduct);
-productRouter.get("/by", productBy);
+productRouter.get("/by", authentication, productBy);
 productRouter.post("/add", authentication, newProduct);
 productRouter.delete("/delete", authentication, deleteProduct);
 productRouter.put('/update',authentication, updateProduct)
