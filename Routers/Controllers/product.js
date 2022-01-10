@@ -51,7 +51,7 @@ const newProduct = async (req, res) => {
   product
     .save()
     .then(async (result) => {
-      await userModel.findByIdAndUpdate(seller, {$push: {shop:result._id}})
+      await userModel.findByIdAndUpdate(seller, { $push: { shop: result } });
       res.status(201).json(result);
     })
     .catch((err) => {
@@ -71,7 +71,6 @@ const approved = async (req, res) => {
       res.status(400).json("you don't have permission");
     });
 };
-
 
 // delete product function
 const deleteProduct = async (req, res) => {
@@ -95,16 +94,29 @@ const deleteProduct = async (req, res) => {
 
 //  update product
 const updateProduct = async (req, res) => {
-  const {_id, price, img, name,Quantity } = req.body;
-  const cloude = await cloudinary.uploader.upload(img, {
-    folder: "product-img",
-  });
+  const { _id, price, img, name, Quantity } = req.body;
+  const productId = await productModel.findOne({ _id });
   const idToken = req.saveToken.id;
-  const productId = await productModel.findById( _id );
-  if (idToken == productId.seller) {
-    await productModel.findByIdAndUpdate(
+
+
+  const cloude = await cloudinary.uploader
+    .upload(img, {
+      folder: "product-img",
+    }).secure_url
+    // .then((result) => {
+    //   res.status(200).json(result);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   res.status(403).json("forbidden");
+    // });
+
+  console.log(cloude);
+
+  await productModel
+    .findByIdAndUpdate(
       { _id },
-      { $set: { price, img: cloude.secure_url, name,Quantity } },
+      { $set: { price, img: cloude, name, Quantity } },
       { new: true }
     )
     .then((result) => {
@@ -112,55 +124,53 @@ const updateProduct = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.status(400).json("you don't have permission");
+      res.status(403).json("forbidden");
     });
-  } else {
-    return res.status(403).json("forbidden");
-  }
 };
+
 // to add item to cart
 const oneProduct = (req, res) => {
-  const {_id, user} = req.body;
+  const { _id, user } = req.body;
   productModel
-    .findOne({_id})
+    .findOne({ _id })
     .then(async (result) => {
-      await userModel.findByIdAndUpdate(user, {$push: {cart:result}})
+      await userModel.findByIdAndUpdate(user, { $push: { cart: result } });
       res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
       console.log(err);
     });
-}
+};
 // delete item from the cart
 const deleteItem = (req, res) => {
-  const {_id, user} = req.body;
+  const { _id, user } = req.body;
   productModel
-    .findOne({_id})
+    .findOne({ _id })
     .then(async (result) => {
-      await userModel.findByIdAndUpdate(user, {$pull: {cart:result._id}})
+      await userModel.findByIdAndUpdate(user, { $pull: { cart: result._id } });
       res.status(200).json(result);
     })
     .catch((err) => {
       res.status(400).json(err);
       console.log(err);
     });
-}
+};
 
 //  Get all product beloang to user
 const productBy = async (req, res) => {
-    const { user } = req.query;
-  
-    await productModel
-      .findOne({ user })
-    
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(400).json(err);
-      });
-  };
+  const { user } = req.query;
+
+  await productModel
+    .findOne({ user })
+
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+};
 
 module.exports = {
   allProduct,
@@ -171,5 +181,5 @@ module.exports = {
   oneProduct,
   deleteItem,
   updateProduct,
-  productBy
+  productBy,
 };
