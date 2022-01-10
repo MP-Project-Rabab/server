@@ -1,5 +1,6 @@
 const commentModel = require("../../DB/Model/comment");
 const postModel = require("./../../DB/Model/post");
+const userModel = require("./../../DB/Model/user");
 
 // creat new comment
 const newComment = (req, res) => {
@@ -15,7 +16,7 @@ const newComment = (req, res) => {
     .save()
     .then(async (result) => {
       await postModel.findByIdAndUpdate(postId, {
-        $push: { commentes: result._id },
+        $push: { commentes: result },
       });
       res.status(201).json(result);
     })
@@ -29,7 +30,7 @@ const newComment = (req, res) => {
 const allComment = (req, res) => {
   commentModel
     .find()
-    .populate("postId userId productId")
+    .populate("userId")
     .then((result) => {
       res.status(200).json(result);
     })
@@ -59,11 +60,12 @@ const updateComment = async (req, res) => {
 
 // delete comment function
 const deleteComment = async (req, res) => {
-  const { _id } = req.query;
+  const { _id, adminId } = req.query;
   const tokenId = req.saveToken.id;
   const commentedBy = await commentModel.findOne({ _id });
+  const admin = await userModel.findById(adminId);
 
-  if (tokenId == commentedBy.userId) {
+  if (tokenId == commentedBy.userId || admin.userType == "admin") {
     await commentModel
       .findByIdAndDelete(_id)
       .then(async () => {
