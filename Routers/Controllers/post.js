@@ -1,4 +1,6 @@
 const postModel = require("../../DB/Model/post");
+const commentModel = require("../../DB/Model/comment");
+
 const cloudinary = require("cloudinary").v2;
 // cloudinary configuration
 cloudinary.config({
@@ -12,7 +14,11 @@ cloudinary.config({
 const allPost = (req, res) => {
   postModel
     .find({ isDeleted: false, isApproved: true })
-    .populate("commentes")
+    .populate({
+      path: "commentes",
+      module: commentModel,
+      populate: { path: "userId" },
+    })
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -24,8 +30,11 @@ const allPost = (req, res) => {
 const allTips = (req, res) => {
   postModel
     .find({ isAdvice: true, isDeleted: false, isApproved: true })
-    .populate("commentes")
-    .populate("user")
+    .populate({
+      path: "commentes",
+      populate: { path: "userId", module: commentModel },
+    })
+    // .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
@@ -34,9 +43,14 @@ const allTips = (req, res) => {
 
 // get all Problems
 const allProblems = (req, res) => {
+  
   postModel
     .find({ isProblem: true, isDeleted: false, isApproved: true })
-    .populate("commentes")
+    .populate({
+      path: "commentes",
+      module: commentModel,
+      populate: { path: "userId" },
+    })
     .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
@@ -112,12 +126,17 @@ const deletePost = async (req, res) => {
   }
 };
 
-// get one post 
+// get one post
 const onePost = (req, res) => {
   const { _id } = req.query;
   postModel
     .findOne({ _id })
-    .populate("user commentes")
+    .populate({
+      path: "commentes",
+      module: commentModel,
+      populate: { path: "userId" },
+    })
+    .populate("user")
     .then((result) => {
       res.status(200).json(result);
     })
