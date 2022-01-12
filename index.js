@@ -41,6 +41,9 @@ app.use("/products", productRouter);
 // rating router
 const rateRouter = require("./Routers/Routes/rate");
 app.use("/rates", rateRouter);
+// order router
+const orderRouter = require("./Routers/Routes/order");
+app.use("/order", orderRouter);
 
 //  PORT
 const PORT = process.env.PORT || 5050;
