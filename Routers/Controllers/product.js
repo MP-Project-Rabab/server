@@ -77,8 +77,8 @@ const deleteProduct = async (req, res) => {
   const { _id, adminId } = req.query;
   const tokenId = req.saveToken.id;
   const productId = await productModel.findOne({ _id });
-  const ad = await userModel.findById(adminId);
-  if (tokenId == productId.seller || ad.userType == "admin") {
+  const admin = await userModel.findById(adminId);
+  if (tokenId == productId.seller._id || admin.userType == "admin") {
     await productModel
       .findByIdAndDelete(_id)
       .then(() => {
