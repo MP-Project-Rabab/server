@@ -4,7 +4,7 @@ const authorization = require("../Midleware/aouth");
 const { allOrder, addOrder, deleteOrder } = require("../Controllers/order");
 const orderRouter = express.Router();
 
-// orderRouter.get("/all", authentication, allOrder);
+orderRouter.get("/all", authentication, allOrder);
 orderRouter.post('/new', authentication, addOrder);
 // orderRouter.delete("/delete", authentication, deleteOrder);
 
