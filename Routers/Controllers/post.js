@@ -32,9 +32,10 @@ const allTips = (req, res) => {
     .find({ isAdvice: true, isDeleted: false, isApproved: true })
     .populate({
       path: "commentes",
-      populate: { path: "userId", module: commentModel },
+      module: commentModel,
+      populate: { path: "userId" },
     })
-    // .populate("user")
+    .populate("user")
     .exec((err, result) => {
       if (err) return handleError(err);
       res.status(200).json(result);
@@ -43,7 +44,6 @@ const allTips = (req, res) => {
 
 // get all Problems
 const allProblems = (req, res) => {
-  
   postModel
     .find({ isProblem: true, isDeleted: false, isApproved: true })
     .populate({
@@ -108,22 +108,36 @@ const deletePost = async (req, res) => {
   const { isDeleted, _id } = req.query;
   const tokenId = req.saveToken.id;
   const postedBy = await postModel.findOne({ _id });
-  if (tokenId == postedBy.user) {
-    postModel.findById({ _id }).then(async (result) => {
-      if (result.isDeleted == true) {
-        return res.json({ massege: "this post already have been deleted" });
-      } else {
-        await postModel.findOneAndUpdate(
-          { _id },
-          { $set: { isDeleted } },
-          { new: true }
-        );
-        return res.json({ massege: "deleted successfully" });
-      }
-    });
+  console.log(postedBy);
+  if (tokenId == postedBy.user || postedBy.userType == "admin") {
+    await postModel
+      .findOneAndUpdate({ _id }, { $set: { isDeleted } }, { new: true })
+      .then(() => {
+        res.status(200).json({ massege: "deleted successfully" });
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
   } else {
-    res.status(403).json({ massege: "forbidden" });
+    res.status(403).json("forbidden");
   }
+
+  // if (tokenId == postedBy.user || postedBy.userType == "admin") {
+  //   postModel.findById({ _id }).then(async (result) => {
+  //     if (result.isDeleted == true) {
+  //       return res.json({ massege: "this post already have been deleted" });
+  //     } else {
+  //       await postModel.findOneAndUpdate(
+  //         { _id },
+  //         { $set: { isDeleted } },
+  //         { new: true }
+  //       );
+  //       return res.json({ massege: "deleted successfully" });
+  //     }
+  //   });
+  // } else {
+  //   res.status(403).json({ massege: "forbidden" });
+  // }
 };
 
 // get one post

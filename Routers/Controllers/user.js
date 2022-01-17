@@ -148,9 +148,27 @@ const profile = async (req, res) => {
 //  Update user profile
 const updateProfile = async (req, res) => {
   const { userName, avatar, location, certifacte, _id, cart } = req.body;
-  const cloude = await cloudinary.uploader.upload(avatar, {
+  const cloude = await cloudinary.uploader.upload(avatar,{
     folder: "profile-img",
+  })
+  .then((result) => {
+    res.status(200).json(result);
+  })
+  .catch((err) => {
+    res.status(403).json(err);
+    console.log(err);
   });
+
+  const cloude2 = await cloudinary.uploader.upload(certifacte,{
+    folder: "certifacte-img",
+  })
+  // .then((result) => {
+  //   res.status(200).json(result);
+  // })
+  // .catch((err) => {
+  //   res.status(403).json(err);
+  //   console.log(err);
+  // });
 
   await userModel
     .findByIdAndUpdate(
@@ -160,7 +178,7 @@ const updateProfile = async (req, res) => {
           userName,
           avatar: cloude.secure_url,
           location,
-          certifacte,
+          certifacte: cloude2.secure_url,
           cart,
         },
       },
