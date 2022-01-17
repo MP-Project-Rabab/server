@@ -1,5 +1,20 @@
 const orderModel = require("../../DB/Model/order");
 
+
+// get all Orders
+
+const allOrder = (req, res) => {
+    orderModel
+      .find()
+      .then((result) => {
+        res.status(200).json(result);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+        console.log(err);
+      });
+  };
+
 const addOrder = (req, res) => {
   const { Quantity, user, orders, totalPrice } = req.body;
   const order = new orderModel({
@@ -22,4 +37,4 @@ const addOrder = (req, res) => {
     });
 };
 
-module.exports = { addOrder };
+module.exports = { addOrder, allOrder };
