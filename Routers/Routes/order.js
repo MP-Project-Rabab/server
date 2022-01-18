@@ -7,7 +7,7 @@ const orderRouter = express.Router();
 orderRouter.get("/all", authentication, allOrder);
 orderRouter.post('/new', authentication, addOrder);
 orderRouter.put('/update', authentication, updateOrder);
-// orderRouter.delete("/delete", authentication, deleteOrder);
+orderRouter.delete("/delete", authentication, deleteOrder);
 
 
 
