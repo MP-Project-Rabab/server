@@ -60,8 +60,8 @@ const deleteOrder = async (req, res) => {
     const {_id} = req.query;
     await orderModel
     .findByIdAndDelete(_id)
-    .then(() => {
-        res.status(200).json({ massege: "deleted successfully" });
+    .then((result) => {
+        res.status(200).json(result);
       })
       .catch((err) => {
         res.status(400).json(err);
