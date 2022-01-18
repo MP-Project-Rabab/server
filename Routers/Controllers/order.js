@@ -59,7 +59,7 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
     const {_id} = req.query;
     await orderModel
-    .findByIdAndDelete(_id)
+    .findByIdAndDelete({_id})
     .then((result) => {
         res.status(200).json(result);
       })
