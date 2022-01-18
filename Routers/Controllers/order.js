@@ -37,7 +37,7 @@ const addOrder = (req, res) => {
     });
 };
 
-// Update yhe Order function
+// Update the Order function
 const updateOrder = async (req, res) => {
   const { _id, totalPrice, Quantity } = req.body;
   await orderModel
@@ -55,4 +55,16 @@ const updateOrder = async (req, res) => {
     });
 };
 
-module.exports = { addOrder, allOrder, updateOrder };
+// delete the Order function
+const deleteOrder = async (req, res) => {
+    const {_id} = req.query;
+    await orderModel
+    .findByIdAndDelete(_id)
+    .then(() => {
+        res.status(200).json({ massege: "deleted successfully" });
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+}
+module.exports = { addOrder, allOrder, updateOrder, deleteOrder };
