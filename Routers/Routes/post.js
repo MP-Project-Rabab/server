@@ -22,7 +22,7 @@ postRouter.put("/update", authentication, updatePost);
 postRouter.get("/", allPost);
 postRouter.get("/tips", allTips);
 postRouter.get("/problems", allProblems);
-postRouter.get("/onePost", authentication, onePost);
+postRouter.get("/onePost", onePost);
 postRouter.delete("/delete", authentication, deletePost);
 
 // For Admin

@@ -29,7 +29,7 @@ const register = async (req, res) => {
       password: savePass,
       role,
     };
-  
+
     const token = jwt.sign(data, activeKey, { expiresIn: "60m" });
 
     // Sendgrid/mail
@@ -147,21 +147,37 @@ const profile = async (req, res) => {
 
 //  Update user profile
 const updateProfile = async (req, res) => {
-  const { userName, avatar, location, certifacte, _id, cart } = req.body;
-  const cloude = await cloudinary.uploader.upload(avatar,{
-    folder: "profile-img",
-  })
-  .then((result) => {
-    res.status(200).json(result);
-  })
-  .catch((err) => {
-    res.status(403).json(err);
-    console.log(err);
-  });
+  try {
+    const { userName, avatar, location, certifacte, _id, cart } = req.body;
+    const cloude = await cloudinary.uploader.upload(avatar, {
+      folder: "profile-img",
+    });
+  
+    await userModel
+      .findByIdAndUpdate(
+        { _id },
+        {
+          $set: {
+            userName,
+            avatar: cloude.secure_url,
+            location,
+            // certifacte: cloude2.secure_url,
+            cart,
+          },
+        },
+        { new: true }
+      )
+      .then((result) => {
+        res.status(200).json(result);
+      });
+  } catch (error) {
+    res.status(403).json(error);
+    console.log(error);
+  }
 
-  const cloude2 = await cloudinary.uploader.upload(certifacte,{
-    folder: "certifacte-img",
-  })
+  // const cloude2 = await cloudinary.uploader.upload(certifacte,{
+  //   folder: "certifacte-img",
+  // })
   // .then((result) => {
   //   res.status(200).json(result);
   // })
@@ -169,28 +185,6 @@ const updateProfile = async (req, res) => {
   //   res.status(403).json(err);
   //   console.log(err);
   // });
-
-  await userModel
-    .findByIdAndUpdate(
-      { _id },
-      {
-        $set: {
-          userName,
-          avatar: cloude.secure_url,
-          location,
-          certifacte: cloude2.secure_url,
-          cart,
-        },
-      },
-      { new: true }
-    )
-
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(403).json("forbidden");
-    });
 };
 
 //  Update user Type for Admin
@@ -205,7 +199,6 @@ const updateUserType = async (req, res) => {
       res.status(403).json("forbidden");
     });
 };
-
 
 // delete user function
 
