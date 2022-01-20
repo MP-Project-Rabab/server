@@ -1,5 +1,6 @@
 const postModel = require("../../DB/Model/post");
 const commentModel = require("../../DB/Model/comment");
+const userModel = require("./../../DB/Model/user");
 
 const cloudinary = require("cloudinary").v2;
 // cloudinary configuration
@@ -105,13 +106,14 @@ const updatePost = async (req, res) => {
 
 // soft delete post function
 const deletePost = async (req, res) => {
-  const { isDeleted, _id } = req.query;
+  const { isDeleted, _id, adminId } = req.query;
   const tokenId = req.saveToken.id;
   const postedBy = await postModel.findOne({ _id });
-  console.log(postedBy);
-  if (tokenId == postedBy.user || postedBy.userType == "admin") {
+  const admin = await userModel.findById(adminId);
+ 
+  if (tokenId == postedBy.user || admin.userType == "admin") {
     await postModel
-      .findOneAndUpdate({ _id }, { $set: { isDeleted } }, { new: true })
+      .findOneAndUpdate({ _id }, { $set: { isDeleted: true } }, { new: true })
       .then(() => {
         res.status(200).json({ massege: "deleted successfully" });
       })
@@ -121,30 +123,13 @@ const deletePost = async (req, res) => {
   } else {
     res.status(403).json("forbidden");
   }
-
-  // if (tokenId == postedBy.user || postedBy.userType == "admin") {
-  //   postModel.findById({ _id }).then(async (result) => {
-  //     if (result.isDeleted == true) {
-  //       return res.json({ massege: "this post already have been deleted" });
-  //     } else {
-  //       await postModel.findOneAndUpdate(
-  //         { _id },
-  //         { $set: { isDeleted } },
-  //         { new: true }
-  //       );
-  //       return res.json({ massege: "deleted successfully" });
-  //     }
-  //   });
-  // } else {
-  //   res.status(403).json({ massege: "forbidden" });
-  // }
 };
 
 // get one post
 const onePost = (req, res) => {
   const { _id } = req.query;
   postModel
-    .findOne({ _id })
+    .findOne({ _id, isDeleted: false })
     .populate({
       path: "commentes",
       module: commentModel,
