@@ -29,7 +29,6 @@ const addOrder = (req, res) => {
     .then(async (result) => {
       //   await userModel.findByIdAndUpdate(seller, { $push: { shop: result } });
       res.status(201).json(result);
-      console.log(result);
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -39,15 +38,18 @@ const addOrder = (req, res) => {
 
 // Update the Order function
 const updateOrder = async (req, res) => {
-  const { _id, totalPrice, Quantity } = req.body;
+  const { totalPrice, Quantity, orders } = req.body;
+  const findOrder = await orderModel.findOne({ orders });
+
   await orderModel
-    .findByIdAndUpdate(
-      { _id },
+    .findOneAndUpdate(
+     {orders},
       { $set: { totalPrice, Quantity } },
       { new: true }
     )
     .then((result) => {
       res.status(200).json(result);
+      console.log(result);
     })
     .catch((err) => {
       console.log(err);
@@ -57,9 +59,11 @@ const updateOrder = async (req, res) => {
 
 // delete the Order function
 const deleteOrder = async (req, res) => {
-  const { _id } = req.query;
+  const { orders } = req.query;
+  const find = await orderModel.findOne({ orders });
+
   await orderModel
-    .findOneAndDelete({ _id })
+    .findByIdAndDelete(find._id)
     .then((result) => {
       res.status(200).json(result);
     })
