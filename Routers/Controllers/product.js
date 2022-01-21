@@ -161,7 +161,7 @@ const productBy = async (req, res) => {
   const { user } = req.query;
 
   await productModel
-    .findOne({ user, isApproved: true })
+    .find({ user, isApproved: true })
 
     .then((result) => {
       res.status(200).json(result);
