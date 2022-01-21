@@ -135,7 +135,7 @@ const allUser = async (req, res) => {
 const profile = async (req, res) => {
   const { _id } = req.query;
   userModel
-    .findOne({ _id })
+    .find({ _id, isApproved: true })
     .populate("cart shop")
     .then((result) => {
       res.status(200).json(result);
