@@ -23,6 +23,7 @@ const allProduct = (req, res) => {
       console.log(err);
     });
 };
+// get all not Approved Product
 const notApproved = (req, res) => {
   productModel
     .find({ isApproved: false })
@@ -98,18 +99,16 @@ const updateProduct = async (req, res) => {
   const productId = await productModel.findOne({ _id });
   const idToken = req.saveToken.id;
 
-
-  const cloude = await cloudinary.uploader
-    .upload(img, {
-      folder: "product-img",
-    }).secure_url
-    // .then((result) => {
-    //   res.status(200).json(result);
-    // })
-    // .catch((err) => {
-    //   console.log(err);
-    //   res.status(403).json("forbidden");
-    // });
+  const cloude = await cloudinary.uploader.upload(img, {
+    folder: "product-img",
+  }).secure_url;
+  // .then((result) => {
+  //   res.status(200).json(result);
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  //   res.status(403).json("forbidden");
+  // });
 
   console.log(cloude);
 
@@ -162,7 +161,7 @@ const productBy = async (req, res) => {
   const { user } = req.query;
 
   await productModel
-    .findOne({ user })
+    .findOne({ user, isApproved: true })
 
     .then((result) => {
       res.status(200).json(result);
