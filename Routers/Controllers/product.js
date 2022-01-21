@@ -162,7 +162,6 @@ const productBy = async (req, res) => {
 
   await productModel
     .find({ user, isApproved: true })
-
     .then((result) => {
       res.status(200).json(result);
     })
