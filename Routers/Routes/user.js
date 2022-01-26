@@ -20,7 +20,7 @@ const userRouter = express.Router();
 userRouter.post("/register", register);
 userRouter.get("/activated/:token", activated);
 userRouter.post("/login", logIn);
-userRouter.get("/profile", authentication, profile);
+userRouter.get("/profile", profile);
 userRouter.put("/update",authentication, updateProfile);
 userRouter.put("/forget", forgetPass);
 userRouter.get("/reset-pass/:res-token", updatePass);
