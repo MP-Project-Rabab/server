@@ -75,7 +75,7 @@ const activated = (req, res) => {
           res
             .status(201)
             .send(
-              `<h1>Email has been activated</h1> <button><a href=${process.env.LOG_PAGE}login>Log In</a></button>`
+              `<h1>Email has been activated</h1>  <h2>تم تفعيل حسابك</h2>`
             );
         })
         .catch((err) => {
