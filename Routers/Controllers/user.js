@@ -74,9 +74,7 @@ const activated = (req, res) => {
         .then((result) => {
           res
             .status(201)
-            .send(
-              `<h1>Email has been activated</h1>  <h2>تم تفعيل حسابك</h2>`
-            );
+            .send(`<h1>Email has been activated</h1>  <h2>تم تفعيل حسابك</h2>`);
         })
         .catch((err) => {
           res.status(400).json(err);
@@ -122,7 +120,7 @@ const logIn = (req, res) => {
 // get all users function
 const allUser = async (req, res) => {
   userModel
-    .find()
+    .find({ isDeleted: false })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -152,7 +150,7 @@ const updateProfile = async (req, res) => {
     const cloude = await cloudinary.uploader.upload(avatar, {
       folder: "profile-img",
     });
-  
+
     await userModel
       .findByIdAndUpdate(
         { _id },
@@ -205,23 +203,31 @@ const updateUserType = async (req, res) => {
 const deleteUser = async (req, res) => {
   const { _id } = req.query;
 
-  userModel
-    .findById({ _id })
+  await userModel
+    .findByIdAndUpdate({ _id }, { $set: { isDeleted: true } }, { new: true })
     .then((result) => {
-      console.log(result);
-      if (result) {
-        userModel.deleteOne({ _id }, (err) => {
-          if (err) return handleError(err);
-        });
-
-        res.status(200).json({ massege: "user deleted successfully" });
-      } else {
-        return res.status(404).json("user not found");
-      }
+      res.status(200).json(result);
     })
     .catch((err) => {
-      res.status(400).json(err);
+      res.status(403).json(err);
     });
+
+  // .findById({ _id })
+  // .then((result) => {
+  //   console.log(result);
+  //   if (result) {
+  //     userModel.deleteOne({ _id }, (err) => {
+  //       if (err) return handleError(err);
+  //     });
+
+  //     res.status(200).json({ massege: "user deleted successfully" });
+  //   } else {
+  //     return res.status(404).json("user not found");
+  //   }
+  // })
+  // .catch((err) => {
+  //   res.status(400).json(err);
+  // });
 };
 
 // forget password function

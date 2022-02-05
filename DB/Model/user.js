@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema({
   location: { type: String },
   certifacte: { type: String },
   restToken: { type: String, default: "" },
+  isDeleted: { type: Boolean, default: false },
 });
 
 module.exports = mongoose.model("User", userSchema);
