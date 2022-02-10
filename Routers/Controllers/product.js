@@ -96,9 +96,6 @@ const deleteProduct = async (req, res) => {
 //  update product
 const updateProduct = async (req, res) => {
   const { _id, price, img, name, Quantity } = req.body;
-  const productId = await productModel.findOne({ _id });
-  const idToken = req.saveToken.id;
-
   const cloude = await cloudinary.uploader.upload(img, {
     folder: "product-img",
   }).secure_url;
@@ -109,8 +106,6 @@ const updateProduct = async (req, res) => {
   //   console.log(err);
   //   res.status(403).json("forbidden");
   // });
-
-  console.log(cloude);
 
   await productModel
     .findByIdAndUpdate(

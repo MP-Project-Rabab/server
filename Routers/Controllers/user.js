@@ -211,23 +211,6 @@ const deleteUser = async (req, res) => {
     .catch((err) => {
       res.status(403).json(err);
     });
-
-  // .findById({ _id })
-  // .then((result) => {
-  //   console.log(result);
-  //   if (result) {
-  //     userModel.deleteOne({ _id }, (err) => {
-  //       if (err) return handleError(err);
-  //     });
-
-  //     res.status(200).json({ massege: "user deleted successfully" });
-  //   } else {
-  //     return res.status(404).json("user not found");
-  //   }
-  // })
-  // .catch((err) => {
-  //   res.status(400).json(err);
-  // });
 };
 
 // forget password function
