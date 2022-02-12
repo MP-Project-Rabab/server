@@ -227,7 +227,7 @@ const forgetPass = (req, res) => {
       to: email,
       from: "cutange1414@hotmail.com",
       subject: "password rest",
-      html: `<a href=${process.env.LOG_PAGE}reset-pass/${token}>reset your password</a>`,
+      html: `<a href=${process.env.LOG_PAGE}reset-password/${token}>reset your password</a>`,
     };
     sgMail
       .send(msg)
