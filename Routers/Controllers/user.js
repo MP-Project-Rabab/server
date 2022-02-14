@@ -255,10 +255,8 @@ const updatePassword = async (req, res) => {
   const { token } = req.params;
   console.log(_id);
   if (token) {
-    jwt.verify(token, activeKey, (err, decodedToken) => {})
-  } else {
-    
-  }
+    jwt.verify(token, activeKey)
+  } 
   // if (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)) {
   //   const savePass = await bcrypt.hash(password, SALT);
   // }
