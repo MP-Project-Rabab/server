@@ -55,7 +55,7 @@ const register = async (req, res) => {
   }
 };
 
-const activated = (req, res) => {
+const activatedAccount = (req, res) => {
   const { token } = req.params;
   if (token) {
     jwt.verify(token, activeKey, (err, decodedToken) => {
@@ -221,7 +221,7 @@ const forgetPass = (req, res) => {
     if (!user) {
       return res.status(400).json("user with this email dosn't exists");
     }
-    const token = jwt.sign({ _id: user._id }, activeKey, { expiresIn: "60m" });
+    const token = jwt.sign({ _id: user._id }, activeKey, { expiresIn: "30m" });
     // Sendgrid/mail
     const msg = {
       to: email,
@@ -250,33 +250,37 @@ const forgetPass = (req, res) => {
   });
 };
 
-const updatePass = async (req, res) => {
+const updatePassword = async (req, res) => {
   const { password, _id } = req.body;
   const { token } = req.params;
   console.log(_id);
-  const userId = await userModel.findOne({ _id });
-
-  if (token == userId) {
-    await userModel.findOneAndUpdate(
-      { _id },
-      { $set: { password } },
-      { new: true }
-    );
-    res.status(201).json("done");
+  if (token) {
+    jwt.verify(token, activeKey, (err, decodedToken) => {})
   } else {
-    return res.status(403).json("forbidden");
+    
   }
+  // if (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)) {
+  //   const savePass = await bcrypt.hash(password, SALT);
+  // }
+  await userModel
+    .findOneAndUpdate({ _id }, { $set: { password } }, { new: true })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(403).json(err);
+    });
 };
 
 module.exports = {
   register,
-  activated,
+  activatedAccount,
   logIn,
   allUser,
   profile,
   deleteUser,
   forgetPass,
-  updatePass,
+  updatePassword,
   updateProfile,
   updateUserType,
 };

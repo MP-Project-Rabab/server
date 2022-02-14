@@ -5,9 +5,9 @@ const {
   allUser,
   profile,
   deleteUser,
-  activated,
+  activatedAccount,
   forgetPass,
-  updatePass,
+  updatePassword,
   updateProfile,
   updateUserType
 } = require("../Controllers/user");
@@ -18,12 +18,12 @@ const passport = require("passport");
 const userRouter = express.Router();
 
 userRouter.post("/register", register);
-userRouter.get("/activated/:token", activated);
+userRouter.get("/activated/:token", activatedAccount);
 userRouter.post("/login", logIn);
 userRouter.get("/profile", profile);
 userRouter.put("/update",authentication, updateProfile);
-userRouter.put("/forget", forgetPass);
-userRouter.get("/reset-pass/:res-token", updatePass);
+userRouter.put("/reset-pass", forgetPass);
+userRouter.get("/reset-pass/:res-token", updatePassword);
 // // just for admin
 userRouter.put("/user-type", authentication, authorization, updateUserType);
 userRouter.get("/", authentication, authorization, allUser);
