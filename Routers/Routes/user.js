@@ -23,7 +23,7 @@ userRouter.post("/login", logIn);
 userRouter.get("/profile", profile);
 userRouter.put("/update",authentication, updateProfile);
 userRouter.post("/reset-pass", forgetPass);
-userRouter.put("/reset-pass/:res-token", authentication, updatePassword);
+userRouter.put("/reset-pass", authentication, updatePassword);
 // // just for admin
 userRouter.put("/user-type", authentication, authorization, updateUserType);
 userRouter.get("/", authentication, authorization, allUser);
