@@ -255,8 +255,8 @@ const updatePassword = async (req, res) => {
   const { token } = req.params;
   console.log(_id);
   if (token) {
-    jwt.verify(token, activeKey, (err, decodedToken) => {
-      const { _id } = decodedToken;
+    jwt.verify(token, activeKey, (err, resetToken) => {
+      const { _id } = resetToken;
       await userModel
       .findOneAndUpdate({ _id }, { $set: { password } }, { new: true })
       .then((result) => {
