@@ -251,28 +251,25 @@ const forgetPass = (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-  const { password} = req.body;
+  const { password } = req.body;
   const { token } = req.params;
   console.log(_id);
   if (token) {
     jwt.verify(token, activeKey, async (err, resetToken) => {
       const { _id } = resetToken;
       await userModel
-      .findOneAndUpdate({ _id }, { $set: { password } }, { new: true })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.status(403).json(err);
-      });
-    })
-    
-
-  } 
+        .findOneAndUpdate({ _id }, { $set: { password } }, { new: true })
+        .then((result) => {
+          res.status(200).json(result);
+        })
+        .catch((err) => {
+          res.status(403).json(err);
+        });
+    });
+  }
   // if (password.match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/)) {
   //   const savePass = await bcrypt.hash(password, SALT);
   // }
-  
 };
 
 module.exports = {
