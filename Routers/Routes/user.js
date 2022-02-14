@@ -22,8 +22,8 @@ userRouter.get("/activated/:token", activatedAccount);
 userRouter.post("/login", logIn);
 userRouter.get("/profile", profile);
 userRouter.put("/update",authentication, updateProfile);
-userRouter.put("/reset-pass", forgetPass);
-userRouter.get("/reset-pass/:res-token", updatePassword);
+userRouter.post("/reset-pass", forgetPass);
+userRouter.put("/reset-pass/:res-token", updatePassword);
 // // just for admin
 userRouter.put("/user-type", authentication, authorization, updateUserType);
 userRouter.get("/", authentication, authorization, allUser);
