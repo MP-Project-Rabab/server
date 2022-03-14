@@ -252,16 +252,15 @@ const forgetPass = (req, res) => {
 
 const updatePassword = async (req, res) => {
   const { password } = req.body;
-  const { id } = req.query;
-  // const { token } = req.params;
-  console.log(_id);
-  if (id) {
-    jwt.verify(id, activeKey, async (err, resetToken) => {
+  const { token } = req.params;
+ console.log(req.saveToken.id);
+  if (token) {
+    jwt.verify(token, activeKey, async (err, resetToken) => {
       const { email } = resetToken;
       const r = userModel.findOne({ email })
-      console.log(_id);
+      console.log(email);
       await userModel
-        .findOneAndUpdate({ _id: r._id }, { $set: { password } }, { new: true })
+        .findOneAndUpdate({ _id: req.saveToken.id }, { $set: { password } }, { new: true })
         .then((result) => {
           res.status(200).json(result);
         })
